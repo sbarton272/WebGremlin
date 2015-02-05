@@ -9,3 +9,7 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 # Resources
 - http://spritely.net/
 - http://www.fahr-mit-baumann.de/
+
+# TODO
+- Try https://developer.chrome.com/extensions/samples#mappy
+- Try displaying images

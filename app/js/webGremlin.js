@@ -35,7 +35,7 @@ function WebGremlin(animations) {
     this.start = function() {
         var act = Math.floor(Math.random() * actions.length);
         console.log('Your web gremlin is awake');
-        console.log(actions[act]);
+        console.log('Performing: ' + actions[act]);
 
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
@@ -118,7 +118,7 @@ function AnimationEngine() {
             case this.MOVEMENT:
                 this.runMove($sprite, animation, onFinalFrame);
                 break;
-            case this.IN_PALCE:
+            case this.IN_PLACE:
                 this.runInPlace($sprite, animation, onFinalFrame);
                 break;
             case this.DRAGGABLE:

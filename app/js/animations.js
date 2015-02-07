@@ -17,7 +17,7 @@ var ANIMATIONS = {
         "height":"123px",
         "no_of_frames":3,
         "fps":12,
-        "sound":"res/audio/run.wav"
+        "sound":"res/audio/whoosh 1.wav"
     },
     "drag_bird" :
     {

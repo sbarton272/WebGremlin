@@ -81,7 +81,7 @@ function AnimationEngine() {
                 this.runDraggable(animation);
                 break;
             case this.TRIBBLES:
-                var timeout = Math.floor(Math.random() * 10000) + 2000;
+                var timeout = Math.floor(Math.random() * 2000) + 1000;
                 setTimeout(function() { 
                     this.runTribbles(animation, timeout, 0); 
                 }.bind(this), timeout);
@@ -158,9 +158,10 @@ function AnimationEngine() {
         var useIdx = Math.floor(Math.random() * ourimages.length);
         var myimg = chrome.extension.getURL('res/img/' + ourimages[useIdx]);
         images[changeIdx].src = myimg;
-        if (timeout > 200) {
+        if (timeout > 100 ) {
             this.playSound(animation);
         }
+        
 
         if (i < 3*images.length) {
             setTimeout( function() { 

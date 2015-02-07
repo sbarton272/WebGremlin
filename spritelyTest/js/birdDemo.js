@@ -22,4 +22,9 @@ console.log($bird);
 
 $bird.sprite({fps: 12, no_of_frames: 3});
 
+/*
+$('#bird').sprite({fps: 12, no_of_frames: 3})
+    .moveTo(100,100);
+*/
+
 console.log('Injected bird');

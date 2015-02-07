@@ -17,6 +17,7 @@ $('body').append($bird);
 console.log($('#bird'));
 console.log($bird);
 
+
 $('#bird').sprite({fps: 12, no_of_frames: 3})
     .spRandom({
         top: 70,
@@ -26,5 +27,12 @@ $('#bird').sprite({fps: 12, no_of_frames: 3})
         speed: 4000,
         pause: 3000
 });
+
+/*
+$('#bird').sprite({fps: 12, no_of_frames: 3})
+    .moveTo(100,100);
+*/
+
+
 
 console.log('Injected bird');

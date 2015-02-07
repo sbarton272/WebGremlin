@@ -335,6 +335,14 @@
 			}, options.speed + options.pause)
 			return this;
 		},
+		moveTo: function(x, y, speed) {
+			var el_id = $(this).attr('id');
+				$('#' + el_id).animate({
+					top: y + 'px',
+					left: x + 'px'
+				}, speed)
+			return this;
+		},
 		makeAbsolute: function() {
 			// remove an element from its current position in the DOM and
 			// position it absolutely, appended to the body tag.

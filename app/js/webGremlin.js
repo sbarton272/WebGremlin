@@ -21,20 +21,26 @@ function WebGremlin(animations) {
 
     this.AE = new AnimationEngine();
 
-    // Load animations
-    // TODO move animations folder elsewhere
     this.animations = animations;
+
+    var actions = [
+        'inplace_gremlin',
+        'move_gremlin',
+        'tribbles'
+    ];
 
     //----------- Methods -----------------------
 
     // Perform actions randomly
     this.start = function() {
+        var act = Math.floor(Math.random() * actions.length);
         console.log('Your web gremlin is awake');
+        console.log(actions[act]);
 
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate(this.animations['multi_inplace_bird']);
+            this.AE.animate(this.animations[actions[act]]);
         }.bind(this), delayMs);
         
     };
@@ -52,8 +58,9 @@ function AnimationEngine() {
 
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
-    this.IN_PALCE = "ANIMATION_IN_PLACE";
+    this.IN_PLACE = "ANIMATION_IN_PLACE";
     this.DRAGGABLE = "ANIMATION_DRAGGABLE";
+    this.TRIBBLES = "TRIBBLES";
 
     //----------- Actions -----------------------
 
@@ -116,6 +123,13 @@ function AnimationEngine() {
             case this.DRAGGABLE:
                 this.runDraggable($sprite, animation, onFinalFrame);
                 break;
+            case this.TRIBBLES:
+                // TODO move to helper
+                var timeout = Math.floor(Math.random() * 10000) + 2000;
+                setTimeout(function() { 
+                    this.runTribbles(animation, timeout, 0); 
+                }.bind(this), timeout);
+                break;
             default:
                 console.log('Unrecognized animation type [' +
                     animation.type + ']');
@@ -149,16 +163,20 @@ function AnimationEngine() {
     this.runMove = function(sprite, animation, onFinalFrame) {
 
         var topPerc = Math.floor(Math.random() * 80) + 10;
-        var leftPerc = Math.floor(Math.random() * 80) + 10;
+        var leftPerc = 100;//Math.floor(Math.random() * 80) + 10;
         var $sprite = this.drawSprite(animation.width, animation.height,
             topPerc+'%', leftPerc+'%', animation.img);
         this.animateSprite($sprite, animation);
         $sprite.spStart();
         $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
-        $sprite.spChangeDir('left');
-        $sprite.isDraggable({});
+        var tSpd = 0;
+        var lSpd = -3;
 
         this.playSound(animation);
+        $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
+
+        // TODO onFinalFrame
+
     };
 
     // Drag around animation
@@ -176,12 +194,39 @@ function AnimationEngine() {
             stop: function() {
                 // Return sprite to 100% opacity when finished
                 $sprite.fadeTo('fast', 1);
-            },
+                this.playSound(animation);
+            }.bind(this),
             drag: function() {
                 // This event will fire constantly whilst the object is being dragged
             }
         });
+
+        // TODO onFinalFrame
+
     };
+
+    // Replaces images
+    this.runTribbles = function(animation, timeout, i) {
+        var ourimages = [
+            'basic.png','big-poof.png','peeking.png',
+            'small-poof.png'
+        ];
+        var myid = chrome.runtime.id;
+        var images = document.getElementsByTagName('img');
+        var changeIdx = Math.floor(Math.random() * images.length);
+        var useIdx = Math.floor(Math.random() * ourimages.length);
+        var myimg = chrome.extension.getURL('res/img/' + ourimages[useIdx]);
+        images[changeIdx].src = myimg;
+        if (timeout > 200) {
+            this.playSound(animation);
+        }
+
+        if (i < 3*images.length) {
+            setTimeout( function() { 
+                this.runTribbles(animation, (9*timeout/10)+1, i+1); 
+            }.bind(this), timeout);
+        }
+    }
 
     //----------- Animation Helpers -----------------------
 
@@ -200,9 +245,13 @@ function AnimationEngine() {
     //------------Playing Sound------------------
 
     this.playSound = function(animation) {
-        var sound = chrome.extension.getURL(animation.sound);
-        (new buzz.sound(sound)).play();
+        var url = chrome.extension.getURL(animation.sound);
+        var sound = new buzz.sound(url);
+        sound.play();
+        return sound;
     }
+
+    // TODO loop, stop
 
     //----------- Drawing -----------------------
 
@@ -252,6 +301,8 @@ function AnimationEngine() {
         // Remove animation and div
         sprite.destroy();
         sprite.remove();
+
+        // TODO remove audio
     }
 
 };

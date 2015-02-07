@@ -38,7 +38,8 @@ var ANIMATIONS = {
         "width":"180px",
         "height":"123px",
         "no_of_frames":3,
-        "fps":12
+        "fps":12,
+        "sound":"res/audio/whoosh 1.wav"
     },
     "drag_bird" :
     {
@@ -51,8 +52,30 @@ var ANIMATIONS = {
         "play_frames": 30,
         "sound":"res/audio/run.wav"
     },
-    "bird_back_and_forth" :
-    [{
-      // TODO  
-    }]
+    "inplace_gremlin" :
+    {
+        "type":"ANIMATION_IN_PLACE",
+        "img":"res/img/innocent.png",
+        "width":"170px",
+        "height":"228px",
+        "no_of_frames":2,
+        "fps":4,
+        "sound":"res/audio/whistle 2.wav"
+    },
+    "move_gremlin" :
+    {
+        "type":"ANIMATION_MOVE",
+        "img":"res/img/running.png",
+        "width":"170px",
+        "height":"211px",
+        "no_of_frames":5,
+        "fps":3,
+        "sound":"res/audio/run.wav"
+
+    },
+    "tribbles" :
+    {
+        "type":"TRIBBLES",
+        "sound":"res/audio/poof 1.wav"
+    }
 };

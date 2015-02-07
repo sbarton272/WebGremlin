@@ -16,6 +16,7 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 
 # Features
 - run across the screen
+- innocent whistle / toe bounce
 - giggle
 - peek from sides of screen
 - tickling

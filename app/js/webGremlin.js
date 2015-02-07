@@ -20,10 +20,11 @@ function WebGremlin() {
         console.log('Your web gremlin is awake');
         console.log(this.AE);
         
-        var delayMs = Math.floor(Math.random() * this.MAX_DELAY); 
+        // Action after certain delay
+        var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate({'type':this.AE.MOVEMENT});
-        }.bind(this), delayMs)
+            this.AE.animate({'type':this.AE.IN_PALCE});
+        }.bind(this), delayMs);
         
     };
 };
@@ -33,11 +34,16 @@ function WebGremlin() {
 //---------------------------------------------
 
 function AnimationEngine() {
+
+    //----------- Constants -----------------------
+
+    this.Z_SCORE = 9999999;
+
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
+    this.IN_PALCE = "ANIMATION_IN_PLACE";
 
-    // TODO create div for sprite, add sprite to body
-    // TODO animate sprite (per animation)
+    //----------- Actions -----------------------
 
     // Animation object used to play animation 
     this.animate = function(animation) {
@@ -46,6 +52,9 @@ function AnimationEngine() {
         switch(animation.type) {
             case this.MOVEMENT:
                 this.runMove(animation);
+                break;
+            case this.IN_PALCE:
+                this.runInPlace(animation);
                 break;
             default:
                 console.log('Unrecognized animation type [' +
@@ -62,29 +71,54 @@ function AnimationEngine() {
     // - no_of_frames
 
     // In place animation
-    runInPlace = function(animation) {
+    this.runInPlace = function(animation) {
+        // TODO remove hard coding
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
-        var $sprite = $('<div/>', {
-            'id':'gremline',
-        })
-        .css({
-            'position':'absolute',
-            'top':String(topPerc) + '%',
-            'left':String(leftPerc) + '%',
-            'background-image':animtion.url,
-            'background-repeat':'no-repeat',
-            'background-color':'transparent',
-            'z-index':'10000'
-        });
-        $('body').append($sprite);
-        $sprite.sprite({fps: 12, no_of_frames: animation.no_of_frames});
+        var $sprite = this.drawSprite('180px', '123px', topPerc+'%',
+            leftPerc+'%', 'img/bird.png')
+        $sprite.sprite({fps: 12, no_of_frames: 3});
     };
 
     // Move across screen in straight line
-    runMove = function(animation) {
-        console.log(MOVEMENT);
+    this.runMove = function(animation) {
+        console.log(this.MOVEMENT);
     };
+
+    //----------- Drawing -----------------------
+
+    /*
+     * PARAMS:
+     *   width   (str) width of base animation frame
+     *   height  (str) height of base animation frame
+     *   posTop  (str) position of top of div
+     *   posLeft (str) position of left of div
+     *   backgroundImg (str) file path
+     * RETURNS:
+     *   spriteObject
+     */
+    this.drawSprite = function(width, height, posTop, posLeft, backgroundImg) {
+
+        var url = 'url(' + chrome.extension.getURL(backgroundImg) + ')';
+
+        // Define sprite as div
+        var $sprite = $('<div/>', {
+            'width': width.toString(),
+            'height': height.toString()
+        })
+        .css({
+            'position': 'absolute',
+            'top': topPerc,
+            'left': leftPerc,
+            'background-image': url,
+            'background-repeat': 'no-repeat',
+            'background-color': 'transparent',
+            'z-index': this.Z_SCORE
+        });
+        $('body').append($sprite);
+
+        return $sprite;
+    }
 
 };
 

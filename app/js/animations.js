@@ -7,7 +7,7 @@ var ANIMATIONS = {
         "height":"123px",
         "no_of_frames":3,
         "fps":12,
-        "duration": 2000,
+        "duration": 5000,
         "sound":"res/audio/giggle 1.wav"
     },
     "multi_inplace_bird" :
@@ -18,7 +18,7 @@ var ANIMATIONS = {
         "height":"123px",
         "no_of_frames":3,
         "fps":12,
-        "duration": 2000,
+        "duration": 5000,
         "sound":"res/audio/giggle 1.wav"
     },
     {
@@ -28,7 +28,7 @@ var ANIMATIONS = {
         "height":"123px",
         "no_of_frames":3,
         "fps":24,
-        "duration": 2000,
+        "duration": 5000,
         "sound":"res/audio/giggle 4.wav"
     }],
     "move_bird" :
@@ -39,18 +39,8 @@ var ANIMATIONS = {
         "height":"123px",
         "no_of_frames":3,
         "fps":12,
+        "duration": 10000,
         "sound":"res/audio/whoosh 1.wav"
-    },
-    "drag_bird" :
-    {
-        "type":"ANIMATION_DRAGGABLE",
-        "img":"res/img/bird.png",
-        "width":"180px",
-        "height":"123px",
-        "no_of_frames": 3,
-        "fps": 12,
-        "play_frames": 30,
-        "sound":"res/audio/run.wav"
     },
     "inplace_gremlin" :
     {
@@ -70,8 +60,8 @@ var ANIMATIONS = {
         "height":"211px",
         "no_of_frames":8,
         "fps":3,
+        "duration": 10000,
         "sound":"res/audio/run.wav"
-
     },
     "tribbles" :
     {

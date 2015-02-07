@@ -147,11 +147,12 @@ function AnimationEngine() {
         this.setSpritePos(sprite, topPerc + '%', leftPerc + '%');
         this.animateSprite(sprite, animation);
 
+        // Play audio
+        sprite.sound = this.loopSound(animation);
+
         // Set stop time
         setTimeout(function() {
-            
             onFinalFrame(sprite);
-
         }.bind(this), animation['duration']);
         
     };
@@ -159,20 +160,26 @@ function AnimationEngine() {
     // Move across screen in straight line
     this.runMove = function(sprite, animation, onFinalFrame) {
 
+        // Set div
         var topPerc = Math.floor(Math.random() * 80) + 10;
-        var leftPerc = 100;//Math.floor(Math.random() * 80) + 10;
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            topPerc+'%', leftPerc+'%', animation.img);
+        var leftPerc = 100;
+        this.setSpritePos(sprite, topPerc+'%', leftPerc+'%');
+        
+        // Animate
         this.animateSprite($sprite, animation);
         $sprite.spStart();
         $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
-        var tSpd = 0;
-        var lSpd = -3;
 
-        var sound = this.playSound(animation);
-        $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
+        // Move
+        $sprite.animate({top:topPerc+'%', left:'-20%'}, animation['duration']);
 
-        // TODO onFinalFrame
+        // Play audio
+        sprite.sound = this.loopSound(animation);
+
+        // Set stop time
+        setTimeout(function() {
+            onFinalFrame(sprite);
+        }.bind(this), animation['duration']);
     };
 
     // Replaces images
@@ -215,13 +222,23 @@ function AnimationEngine() {
     //------------Playing Sound------------------
 
     this.playSound = function(animation) {
-        var url = chrome.extension.getURL(animation.sound);
-        var sound = new buzz.sound(url);
-        sound.play();
-        return sound;
+        if (animation.sound) {
+            var url = chrome.extension.getURL(animation.sound);
+            var sound = new buzz.sound(url);
+            sound.play();
+            return sound;
+        }
     }
 
-    // TODO loop, stop
+    this.loopSound = function(animation) {
+        if (animation.sound) {
+            var url = chrome.extension.getURL(animation.sound);
+            var sound = new buzz.sound(url);
+            sound.loop();
+            sound.play();
+            return sound;
+        }
+    }
 
     //----------- Drawing -----------------------
 
@@ -272,7 +289,10 @@ function AnimationEngine() {
         sprite.destroy();
         sprite.remove();
 
-        // TODO remove audio
+        // Remove audio
+        if (sprite.sound) {
+            sprite.sound.stop();
+        }
     }
 
 };

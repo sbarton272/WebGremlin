@@ -4,10 +4,6 @@
 * Carson, Adam, Billy and Spencer
 */
 
-// TODO 
-// add audio
-// 
-
 //---------------------------------------------
 // Gremlin engine
 //---------------------------------------------
@@ -21,13 +17,11 @@ function WebGremlin(animations) {
 
     this.AE = new AnimationEngine();
 
-    // Load animations
-    // TODO move animations folder elsewhere
     this.animations = animations;
 
     var actions = [
-        'inplace_gremlin',
-        'move_gremlin',
+        'whistle_gremlin',
+        'running_gremlin',
         'tribbles'
     ];
 
@@ -37,7 +31,7 @@ function WebGremlin(animations) {
     this.start = function() {
         var act = Math.floor(Math.random() * actions.length);
         console.log('Your web gremlin is awake');
-        console.log(actions[act]);
+        console.log('Performing: ' + actions[act]);
 
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
@@ -46,6 +40,7 @@ function WebGremlin(animations) {
         }.bind(this), delayMs);
         
     };
+
 };
 
 //---------------------------------------------
@@ -61,7 +56,6 @@ function AnimationEngine() {
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
     this.IN_PLACE = "ANIMATION_IN_PLACE";
-    this.DRAGGABLE = "ANIMATION_DRAGGABLE";
     this.TRIBBLES = "TRIBBLES";
 
     //----------- Actions -----------------------
@@ -69,85 +63,127 @@ function AnimationEngine() {
     // Animation object used to play animation 
     this.animate = function(animation) {
 
+        if ($.isArray(animation)) {
+
+            // Multiple steps            
+            this.runSteps(animation, 0);
+
+        } else {
+
+            // Single step
+            this.runStep(animation, function(sprite) {
+                console.log("Done single step animation");
+                
+                this.removeSprite(sprite);
+
+            }.bind(this));
+        }
+    };
+
+    this.runSteps = function(animation, stepI) {
+        
+        // Run steps until end
+        this.runStep(animation[stepI], function(sprite) {
+
+            console.log('Just ran step ' + stepI);
+            stepI++;
+
+            // Remove prior sprite every time
+            this.removeSprite(sprite);
+
+            if (animation.length > stepI) {
+                // Run next step
+                this.runSteps(animation, stepI);
+            } else {
+                console.log("Done multi step animation");
+            }
+
+        }.bind(this));
+    
+    }
+
+    this.runStep = function(animation, onFinalFrame) {
+
+        // Create sprite div, once per step as may have different animation
+        var $sprite = this.drawSprite(animation.width, animation.height,
+            animation.img);
+
         // Case on animation type
         switch(animation.type) {
             case this.MOVEMENT:
-                this.runMove(animation);
+                this.runMove($sprite, animation, onFinalFrame);
                 break;
             case this.IN_PLACE:
-                this.runInPlace(animation);
-                break;
-            case this.DRAGGABLE:
-                this.runDraggable(animation);
+                this.runInPlace($sprite, animation, onFinalFrame);
                 break;
             case this.TRIBBLES:
-                var timeout = Math.floor(Math.random() * 2000) + 1000;
-                setTimeout(function() { 
-                    this.runTribbles(animation, timeout, 0); 
-                }.bind(this), timeout);
+                this.runTribbles()
                 break;
             default:
                 console.log('Unrecognized animation type [' +
                     animation.type + ']');
                 break;
         }
-    };
+    }
 
     //----------- Animations -----------------------
 
     // In place animation
-    this.runInPlace = function(animation) {
-        
+    this.runInPlace = function(sprite, animation, onFinalFrame) {
+    
+        // Decide location        
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
         
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            topPerc+'%', leftPerc+'%', animation.img);
-        this.animateSprite($sprite, animation);
-        this.playSound(animation);
+        // Animate
+        this.setSpritePos(sprite, topPerc + '%', leftPerc + '%');
+        this.animateSprite(sprite, animation);
+
+        // Play audio
+        sprite.sound = this.loopSound(animation);
+
+        // Set stop time
+        setTimeout(function() {
+            onFinalFrame(sprite);
+        }.bind(this), animation['duration']);
+        
     };
 
     // Move across screen in straight line
-    this.runMove = function(animation) {
+    this.runMove = function(sprite, animation, onFinalFrame) {
 
+        // Set div
         var topPerc = Math.floor(Math.random() * 80) + 10;
-        var leftPerc = 100;//Math.floor(Math.random() * 80) + 10;
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            topPerc+'%', leftPerc+'%', animation.img);
+        var leftPerc = 100;
+        this.setSpritePos(sprite, topPerc+'%', leftPerc+'%');
+        
+        // Animate
         this.animateSprite($sprite, animation);
         $sprite.spStart();
         $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
-        var tSpd = 0;
-        var lSpd = -3;
 
-        var sound = this.playSound(animation);
-        $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
+        // Move
+        $sprite.animate({top:topPerc+'%', left:'-20%'}, animation['duration']);
+
+        // Play audio
+        sprite.sound = this.loopSound(animation);
+
+        // Set stop time
+        setTimeout(function() {
+            onFinalFrame(sprite);
+        }.bind(this), animation['duration']);
     };
 
-    // Drag around animation
-    this.runDraggable = function(animation) {
+    // Replaces images
+    // NOTE cannot run in multi-step
+    this.runTribbles = function(animation) {
+        var timeout = Math.floor(Math.random() * 10000) + 2000;
+        setTimeout(function() { 
+            this.recurseTribbles(animation, timeout, 0); 
+        }.bind(this), timeout);
+    }
 
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            '50px', '50px', animation.img);
-
-        this.animateSprite($sprite, animation);
-        $sprite.isDraggable({
-            start: function() {
-                // Fade sprite to 70% opacity when at the start of the drag
-                $sprite.fadeTo('fast', 0.7);
-            },
-            stop: function() {
-                // Return sprite to 100% opacity when finished
-                $sprite.fadeTo('fast', 1);
-                this.playSound(animation);
-            }.bind(this),
-            drag: function() {
-                // This event will fire constantly whilst the object is being dragged
-            }
-        });
-    };
-
-    this.runTribbles = function(animation, timeout, i) {
+    this.recurseTribbles = function(animation, timeout, i) {
         var ourimages = [
             'basic.png','big-poof.png','peeking.png',
             'small-poof.png'
@@ -187,10 +223,22 @@ function AnimationEngine() {
     //------------Playing Sound------------------
 
     this.playSound = function(animation) {
-        var url = chrome.extension.getURL(animation.sound);
-        var sound = new buzz.sound(url);
-        sound.play();
-        return sound;
+        if (animation.sound) {
+            var url = chrome.extension.getURL(animation.sound);
+            var sound = new buzz.sound(url);
+            sound.play();
+            return sound;
+        }
+    }
+
+    this.loopSound = function(animation) {
+        if (animation.sound) {
+            var url = chrome.extension.getURL(animation.sound);
+            var sound = new buzz.sound(url);
+            sound.loop();
+            sound.play();
+            return sound;
+        }
     }
 
     //----------- Drawing -----------------------
@@ -205,7 +253,7 @@ function AnimationEngine() {
      * RETURNS:
      *   spriteObject
      */
-    this.drawSprite = function(width, height, posTop, posLeft, backgroundImg) {
+    this.drawSprite = function(width, height, backgroundImg) {
 
         var url = 'url(' + chrome.extension.getURL(backgroundImg) + ')';
 
@@ -217,8 +265,8 @@ function AnimationEngine() {
         .css({
             'cursor':'pointer',
             'position': 'absolute',
-            'top': posTop,
-            'left': posLeft,
+            'top': 0,
+            'left': 0,
             'background-image': url,
             'background-repeat': 'no-repeat',
             'background-color': 'transparent',
@@ -228,6 +276,25 @@ function AnimationEngine() {
 
         return $sprite;
     };
+
+    this.setSpritePos = function(sprite, posTop, posLeft) {
+        sprite.css({
+            'top': posTop,
+            'left': posLeft,
+        })
+    }
+
+    this.removeSprite = function(sprite) {
+
+        // Remove animation and div
+        sprite.destroy();
+        sprite.remove();
+
+        // Remove audio
+        if (sprite.sound) {
+            sprite.sound.stop();
+        }
+    }
 
 };
 

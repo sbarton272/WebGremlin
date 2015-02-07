@@ -5,6 +5,11 @@
 */
 
 //---------------------------------------------
+// Constants
+//---------------------------------------------
+var nullFn = function() {};
+
+//---------------------------------------------
 // Gremlin engine
 //---------------------------------------------
 
@@ -22,6 +27,7 @@ function WebGremlin(animations) {
 
     var actions = [
         'whistle_gremlin',
+        'peeking_gremlin',
         'running_gremlin',
         'random_gremlin',
         'tribbles'
@@ -34,7 +40,7 @@ function WebGremlin(animations) {
 
         console.log('Your web gremlin is awake');
         this.performRandAnimations(this.MIN_DELAY, this.MAX_DELAY);
-        //this.AE.animate(this.animations[actions[0]]);
+        //this.AE.animate(this.animations[actions[1]], nullFn);
     };
 
     this.performRandAnimations = function(minDelay, maxDelay) {
@@ -77,6 +83,7 @@ function AnimationEngine() {
     this.IN_PLACE = "ANIMATION_IN_PLACE";
     this.RANDOM = "ANIMATION_RANDOM";
     this.TRIBBLES = "TRIBBLES";
+    this.PEEKING = "ANIMATION_PEEKING";
 
     //----------- Actions -----------------------
 
@@ -149,6 +156,8 @@ function AnimationEngine() {
             case this.TRIBBLES:
                 this.runTribbles(animation);
                 break;
+            case this.PEEKING:
+                this.runPeeking($sprite, animation, onFinalFrame);
             default:
                 console.log('Unrecognized animation type [' +
                     animation.type + ']');
@@ -288,6 +297,28 @@ function AnimationEngine() {
             }.bind(this), timeout);
         }
     }
+
+    this.runPeeking = function(sprite, animation, onFinalFrame) {
+        
+        // Decide location        
+        var leftPerc = Math.floor(Math.random() * 80) + 10;
+        
+        // Animate
+        sprite.css('position', 'fixed');
+        sprite.css('bottom', '0');
+        sprite.css('top', '');
+        sprite.css('left', leftPerc + '%');
+        this.animateSprite(sprite, animation);
+
+        // Play audio
+        sprite.sound = this.loopSound(animation);
+
+        // Set stop time
+        setTimeout(function() {
+            onFinalFrame(sprite);
+        }.bind(this), animation['duration']);
+    }
+
 
     //----------- Animation Helpers -----------------------
 

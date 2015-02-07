@@ -53,6 +53,17 @@ var ANIMATIONS = {
         "duration": 10000,
         "sound":"res/audio/whistle 2.wav"
     },
+    "peeking_gremlin" :
+    {
+        "type":"ANIMATION_PEEKING",
+        "img":"res/img/peeking.png",
+        "width":"115px",
+        "height":"80px",
+        "no_of_frames":1,
+        "fps":1,
+        "duration": 5000,
+        "sound":"res/audio/giggle 4.wav"
+    },
     "running_gremlin" :
     {
         "type":"ANIMATION_MOVE",
@@ -75,7 +86,6 @@ var ANIMATIONS = {
         "duration": 1000,
         "sound":"res/audio/run.wav"
     },
-
     "tribbles" :
     {
         "type":"TRIBBLES",

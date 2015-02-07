@@ -9,6 +9,7 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 # Resources
 - http://spritely.net/            # library of spite examples
 - http://www.fahr-mit-baumann.de/ # example website
+- http://carl-topham.com/theblog/post/creating-chrome-extension-uses-jquery-manipulate-dom-page/ # tutorial
 
 # TODO
 - Try https://developer.chrome.com/extensions/samples#mappy

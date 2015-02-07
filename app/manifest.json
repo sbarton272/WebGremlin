@@ -12,5 +12,5 @@
       "js/webGremlin.js"]
   } ],
   "manifest_version": 2,
-  "web_accessible_resources": ["res/img/*"]
+  "web_accessible_resources": ["res/img/*", "res/audio/*"]
 }

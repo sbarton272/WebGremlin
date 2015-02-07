@@ -86,6 +86,8 @@ function AnimationEngine() {
         var $sprite = this.drawSprite(animation.width, animation.height,
             topPerc+'%', leftPerc+'%', animation.img);
         $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
+
+        this.playSound(animation);
     };
 
     // Move across screen in straight line
@@ -102,7 +104,15 @@ function AnimationEngine() {
         $sprite.spChangeDir('left');
         $sprite.isDraggable({});
 
+        this.playSound(animation);
+
     };
+
+    //------------Playing Sound------------------
+    this.playSound = function(animation) {
+        var sound = chrome.extension.getURL(animation.sound);
+        (new buzz.sound(sound)).play();
+    }
 
     //----------- Drawing -----------------------
 

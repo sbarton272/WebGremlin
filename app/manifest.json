@@ -1,14 +1,15 @@
 {
-  "name": "do a thing",
-  "version": "100.1",
-  "description": "does a thing",
+  "name": "WebGremlin",
+  "version": "1.0",
+  "description": "Your wonderful web gremlin companion",
   "icons": {
-    "128": "icon.png"
+    "icon": "res/img/icon.png"
   },
   "content_scripts": [ {
-    "matches": ["http://*/*"],
-    "js": ["js/jquery-1.11.2.min.js", "js/content.js"]
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["js/lib/jquery-1.11.2.min.js", "js/lib/jquery-ui.min.js",
+      "js/lib/jquery.spritely.js", "js/lib/buzz.min.js", "js/content.js"]
   } ],
   "manifest_version": 2,
-  "web_accessible_resources": ["resources/img/*"]
+  "web_accessible_resources": ["res/img/*"]
 }

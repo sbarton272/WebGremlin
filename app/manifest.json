@@ -7,7 +7,7 @@
   },
   "content_scripts": [ {
     "matches": ["http://*/*"],
-    "js": ["js/content.js"]
+    "js": ["js/jquery-1.11.2.min.js", "js/content.js"]
   } ],
   "manifest_version": 2,
   "web_accessible_resources": ["resources/img/*"]

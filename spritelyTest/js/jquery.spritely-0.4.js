@@ -133,24 +133,10 @@
 			return parseInt(rand_no = Math.floor((higher - (lower - 1)) * Math.random()) + lower);
 		},
 		getBgY: function(el) {
-			if ($.browser.msie) {
-				// fixme - the background-position property does not work
-				// correctly in IE so we have to hack it here... Not ideal
-				// especially as $.browser is depricated
-				var bgY = $(el).css('background-position-y') || '0';
-			} else {
-				var bgY = ($(el).css('background-position') || ' ').split(' ')[1];
-			}
-			return bgY;
+			return ($(el).css('background-position') || ' ').split(' ')[1];
 		},
 		getBgX: function(el) {
-			if ($.browser.msie) {
-				// see note, above
-				var bgX = $(el).css('background-position-x') || '0';
-			} else {
-				var bgX = ($(el).css('background-position') || ' ').split(' ')[0];
-			}
-			return bgX;
+			return ($(el).css('background-position') || ' ').split(' ')[0];
 		},
 		get_rel_pos: function(pos, w) {
 			// return the position of an item relative to a background

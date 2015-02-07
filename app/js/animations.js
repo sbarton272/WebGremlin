@@ -82,7 +82,7 @@ var ANIMATIONS = {
         "width":"170px",
         "height":"211px",
         "no_of_frames":8,
-        "fps":6,
+        "fps":12,
         "duration": 1000,
         "sound":"res/audio/run.wav"
     },

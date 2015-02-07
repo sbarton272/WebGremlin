@@ -141,6 +141,5 @@ function AnimationEngine() {
 // Run
 //---------------------------------------------
 
-var animations = require('res/animations.json');
-var webGremlin = new WebGremlin(animations);
+var webGremlin = new WebGremlin(ANIMATIONS);
 webGremlin.start();

@@ -8,7 +8,8 @@
   "content_scripts": [ {
     "matches": ["http://*/*", "https://*/*"],
     "js": ["js/lib/jquery-1.11.2.min.js", "js/lib/jquery-ui.min.js",
-      "js/lib/jquery.spritely.js", "js/lib/buzz.min.js", "js/webGremlin.js"]
+      "js/lib/jquery.spritely.js", "js/lib/buzz.min.js", "js/animations.js",
+      "js/webGremlin.js"]
   } ],
   "manifest_version": 2,
   "web_accessible_resources": ["res/img/*"]

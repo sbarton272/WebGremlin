@@ -1,4 +1,4 @@
-{
+var ANIMATIONS = {
     "inplace_bird" :
     {
         "type":"ANIMATION_IN_PLACE",
@@ -17,4 +17,4 @@
         "no_of_frames":3,
         "fps":12
     }
-}
+};

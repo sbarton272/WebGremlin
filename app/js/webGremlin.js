@@ -76,7 +76,7 @@ function AnimationEngine() {
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
         var $sprite = this.drawSprite('180px', '123px', topPerc+'%',
-            leftPerc+'%', 'img/bird.png')
+            leftPerc+'%', 'res/img/bird.png')
         $sprite.sprite({fps: 12, no_of_frames: 3});
     };
 

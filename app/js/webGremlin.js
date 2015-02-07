@@ -34,12 +34,7 @@ function WebGremlin(animations) {
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            // TODO load 
-<<<<<<< HEAD
-            this.AE.animate(this.animations['drag_bird']);
-=======
-            this.AE.animate(this.animations['move_bird']);
->>>>>>> 7035af37c61bfe7e9acc8abdf9a1fef7ed61fe7b
+            this.AE.animate(this.animations['multi_inplace_bird']);
         }.bind(this), delayMs);
         
     };
@@ -65,40 +60,93 @@ function AnimationEngine() {
     // Animation object used to play animation 
     this.animate = function(animation) {
 
+        if ($.isArray(animation)) {
+
+            // Multiple steps            
+            this.runSteps(animation, 0);
+
+        } else {
+
+            // Single step
+            this.runStep(animation, function(sprite) {
+                console.log("Done single step animation");
+                
+                this.removeSprite(sprite);
+
+            }.bind(this));
+        }
+    };
+
+    this.runSteps = function(animation, stepI) {
+        
+        // Run steps until end
+        this.runStep(animation[stepI], function(sprite) {
+
+            console.log('Just ran step ' + stepI);
+            stepI++;
+
+            // Remove prior sprite every time
+            this.removeSprite(sprite);
+
+            if (animation.length > stepI) {
+                // Run next step
+                this.runSteps(animation, stepI);
+            } else {
+                console.log("Done multi step animation");
+            }
+
+        }.bind(this));
+    
+    }
+
+    this.runStep = function(animation, onFinalFrame) {
+
+        // Create sprite div, once per step as may have different animation
+        var $sprite = this.drawSprite(animation.width, animation.height,
+            animation.img);
+
         // Case on animation type
         switch(animation.type) {
             case this.MOVEMENT:
-                this.runMove(animation);
+                this.runMove($sprite, animation, onFinalFrame);
                 break;
             case this.IN_PALCE:
-                this.runInPlace(animation);
+                this.runInPlace($sprite, animation, onFinalFrame);
                 break;
             case this.DRAGGABLE:
-                this.runDraggable(animation);
+                this.runDraggable($sprite, animation, onFinalFrame);
                 break;
             default:
                 console.log('Unrecognized animation type [' +
                     animation.type + ']');
                 break;
         }
-    };
+    }
 
     //----------- Animations -----------------------
 
     // In place animation
-    this.runInPlace = function(animation) {
-        
+    this.runInPlace = function(sprite, animation, onFinalFrame) {
+    
+        // Decide location        
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
         
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            topPerc+'%', leftPerc+'%', animation.img);
-        this.animateSprite($sprite, animation);
-        this.playSound(animation);
+        // Animate
+        this.setSpritePos(sprite, topPerc + '%', leftPerc + '%');
+        this.animateSprite(sprite, animation);
+
+        // Set stop time
+        setTimeout(function() {
+            
+            onFinalFrame(sprite);
+
+        }.bind(this), animation['duration']);
+        
     };
 
     // Move across screen in straight line
-    this.runMove = function(animation) {
+    this.runMove = function(sprite, animation, onFinalFrame) {
 
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
@@ -114,7 +162,7 @@ function AnimationEngine() {
     };
 
     // Drag around animation
-    this.runDraggable = function(animation) {
+    this.runDraggable = function(sprite, animation, onFinalFrame) {
 
         var $sprite = this.drawSprite(animation.width, animation.height,
             '50px', '50px', animation.img);
@@ -168,7 +216,7 @@ function AnimationEngine() {
      * RETURNS:
      *   spriteObject
      */
-    this.drawSprite = function(width, height, posTop, posLeft, backgroundImg) {
+    this.drawSprite = function(width, height, backgroundImg) {
 
         var url = 'url(' + chrome.extension.getURL(backgroundImg) + ')';
 
@@ -180,8 +228,8 @@ function AnimationEngine() {
         .css({
             'cursor':'pointer',
             'position': 'absolute',
-            'top': posTop,
-            'left': posLeft,
+            'top': 0,
+            'left': 0,
             'background-image': url,
             'background-repeat': 'no-repeat',
             'background-color': 'transparent',
@@ -191,6 +239,20 @@ function AnimationEngine() {
 
         return $sprite;
     };
+
+    this.setSpritePos = function(sprite, posTop, posLeft) {
+        sprite.css({
+            'top': posTop,
+            'left': posLeft,
+        })
+    }
+
+    this.removeSprite = function(sprite) {
+
+        // Remove animation and div
+        sprite.destroy();
+        sprite.remove();
+    }
 
 };
 

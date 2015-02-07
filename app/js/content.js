@@ -1,7 +1,7 @@
 function doThing(timeout, i) {
   console.log("Doing Thing.");
   var myid = chrome.runtime.id;
-  var myimg = chrome.extension.getURL('resources/img/test1.jpeg');//"chrome-extension://" + myid + "/resources/img/test1.jpeg";
+  var myimg = chrome.extension.getURL('resources/img/test1.jpeg');
   var images = document.getElementsByTagName('img');
   var changeIdx = Math.floor(Math.random() * images.length);
   images[changeIdx].src = myimg;

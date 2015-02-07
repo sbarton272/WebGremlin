@@ -133,11 +133,14 @@ function AnimationEngine() {
             stop: function() {
                 // Return sprite to 100% opacity when finished
                 $sprite.fadeTo('fast', 1);
-            },
+                this.playSound(animation);
+            }.bind(this),
             drag: function() {
                 // This event will fire constantly whilst the object is being dragged
             }
         });
+
+
     };
 
     //----------- Animation Helpers -----------------------

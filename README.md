@@ -13,3 +13,6 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 # TODO
 - Try https://developer.chrome.com/extensions/samples#mappy
 - Try displaying images
+
+# Features
+- post random gibberish to Facebook

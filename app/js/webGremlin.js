@@ -34,7 +34,7 @@ function WebGremlin(animations) {
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate(this.animations['drag_bird']);
+            this.AE.animate(this.animations['move_gremlin']);
         }.bind(this), delayMs);
         
     };

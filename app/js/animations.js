@@ -42,7 +42,7 @@ var ANIMATIONS = {
         "duration": 10000,
         "sound":"res/audio/whoosh 1.wav"
     },
-    "inplace_gremlin" :
+    "whistle_gremlin" :
     {
         "type":"ANIMATION_IN_PLACE",
         "img":"res/img/innocent.png",
@@ -52,7 +52,7 @@ var ANIMATIONS = {
         "fps":4,
         "sound":"res/audio/whistle 2.wav"
     },
-    "move_gremlin" :
+    "running_gremlin" :
     {
         "type":"ANIMATION_MOVE",
         "img":"res/img/running.png",

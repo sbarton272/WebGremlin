@@ -4,10 +4,6 @@
 * Carson, Adam, Billy and Spencer
 */
 
-// TODO 
-// add audio
-// 
-
 //---------------------------------------------
 // Gremlin engine
 //---------------------------------------------
@@ -24,8 +20,8 @@ function WebGremlin(animations) {
     this.animations = animations;
 
     var actions = [
-        'inplace_gremlin',
-        'move_gremlin',
+        'whistle_gremlin',
+        'running_gremlin',
         'tribbles'
     ];
 
@@ -40,11 +36,11 @@ function WebGremlin(animations) {
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            // this.AE.animate(this.animations[actions[act]]);
-            this.AE.animate(this.animations['multi_inplace_bird']);
+            this.AE.animate(this.animations[actions[act]]);
         }.bind(this), delayMs);
         
     };
+
 };
 
 //---------------------------------------------
@@ -121,11 +117,7 @@ function AnimationEngine() {
                 this.runInPlace($sprite, animation, onFinalFrame);
                 break;
             case this.TRIBBLES:
-                // TODO move to helper
-                var timeout = Math.floor(Math.random() * 10000) + 2000;
-                setTimeout(function() { 
-                    this.runTribbles(animation, timeout, 0); 
-                }.bind(this), timeout);
+                this.runTribbles()
                 break;
             default:
                 console.log('Unrecognized animation type [' +
@@ -183,7 +175,15 @@ function AnimationEngine() {
     };
 
     // Replaces images
-    this.runTribbles = function(animation, timeout, i) {
+    // NOTE cannot run in multi-step
+    this.runTribbles = function(animation) {
+        var timeout = Math.floor(Math.random() * 10000) + 2000;
+        setTimeout(function() { 
+            this.recurseTribbles(animation, timeout, 0); 
+        }.bind(this), timeout);
+    }
+
+    this.recurseTribbles = function(animation, timeout, i) {
         var ourimages = [
             'basic.png','big-poof.png','peeking.png',
             'small-poof.png'

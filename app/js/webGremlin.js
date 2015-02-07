@@ -39,6 +39,7 @@ function WebGremlin(animations) {
     this.performRandAnimations = function(minDelay, maxDelay) {
         
         // TODO finish, have callback
+        // TODO end on tribble
 
         // Select random action
         var act = Math.floor(Math.random() * actions.length);

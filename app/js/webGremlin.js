@@ -13,7 +13,8 @@ function WebGremlin(animations) {
     //----------- Constants -----------------------
 
     // Constants
-    this.MAX_DELAY = 1000;
+    this.MAX_DELAY = 10*1000;
+    this.MIN_DELAY = 1*1000;
 
     this.AE = new AnimationEngine();
 
@@ -30,16 +31,30 @@ function WebGremlin(animations) {
 
     // Perform actions randomly
     this.start = function() {
-        var act = Math.floor(Math.random() * actions.length);
+
         console.log('Your web gremlin is awake');
-        console.log('Performing: ' + actions[act]);
+        this.performRandAnimations(this.MIN_DELAY, this.MAX_DELAY);
+        //this.AE.animate(this.animations[actions[0]]);
+    };
+
+    this.performRandAnimations = function(minDelay, maxDelay) {
+        
+        // TODO finish, have callback
+        // TODO end on tribble
+
+        // Select random action
+        var act = Math.floor(Math.random() * actions.length);
 
         // Action after certain delay
-        var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
+        var delayMs = Math.floor(Math.random() * maxDelay);
         setTimeout(function() {
+            
+            // Animate and call again
+            console.log('Performing: ' + actions[act]);
             this.AE.animate(this.animations[actions[act]]);
+            // TODO this.performRandAnimations(maxDelay);
+
         }.bind(this), delayMs);
-        
     };
 
 };

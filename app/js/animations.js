@@ -49,7 +49,8 @@ var ANIMATIONS = {
         "width":"170px",
         "height":"228px",
         "no_of_frames":2,
-        "fps":4,
+        "fps":3,
+        "duration": 10000,
         "sound":"res/audio/whistle 2.wav"
     },
     "running_gremlin" :

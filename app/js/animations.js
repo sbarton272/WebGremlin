@@ -16,7 +16,8 @@ var ANIMATIONS = {
         "width":"180px",
         "height":"123px",
         "no_of_frames":3,
-        "fps":12
+        "fps":12,
+        "sound":"res/audio/run.wav"
     },
     "drag_bird" :
     {

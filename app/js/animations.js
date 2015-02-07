@@ -68,7 +68,7 @@ var ANIMATIONS = {
         "img":"res/img/running.png",
         "width":"170px",
         "height":"211px",
-        "no_of_frames":5,
+        "no_of_frames":8,
         "fps":3,
         "sound":"res/audio/run.wav"
 

@@ -173,11 +173,10 @@ function AnimationEngine() {
         var tSpd = 0;
         var lSpd = -3;
 
-        this.playSound(animation);
+        var sound = this.playSound(animation);
         $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
 
         // TODO onFinalFrame
-
     };
 
     // Drag around animation

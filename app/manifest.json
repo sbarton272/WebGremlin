@@ -1,9 +1,9 @@
 {
   "name": "WebGremlin",
-  "version": "1.0",
+  "version": "0.1",
   "description": "Your wonderful web gremlin companion",
   "icons": {
-    "128": "res/img/icon.png"
+    "128": "res/img/icon2.png"
   },
   "content_scripts": [ {
     "matches": ["http://*/*", "https://*/*"],

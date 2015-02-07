@@ -39,20 +39,23 @@ function WebGremlin(animations) {
 
     this.performRandAnimations = function(minDelay, maxDelay) {
         
-        // TODO finish, have callback
-        // TODO end on tribble
-
         // Select random action
         var act = Math.floor(Math.random() * actions.length);
 
         // Action after certain delay
-        var delayMs = Math.floor(Math.random() * maxDelay);
+        var delayMs = Math.floor(Math.random() * (maxDelay - minDelay)
+            + minDelay);
+
         setTimeout(function() {
             
             // Animate and call again
             console.log('Performing: ' + actions[act]);
-            this.AE.animate(this.animations[actions[act]]);
-            // TODO this.performRandAnimations(maxDelay);
+
+            this.AE.animate(this.animations[actions[act]], function() {
+
+                // Continue performing actions
+                this.performRandAnimations(minDelay, maxDelay);
+            }.bind(this));
 
         }.bind(this), delayMs);
     };
@@ -78,12 +81,12 @@ function AnimationEngine() {
     //----------- Actions -----------------------
 
     // Animation object used to play animation 
-    this.animate = function(animation) {
+    this.animate = function(animation, cb) {
 
         if ($.isArray(animation)) {
 
             // Multiple steps            
-            this.runSteps(animation, 0);
+            this.runSteps(animation, 0, cb);
 
         } else {
 
@@ -92,12 +95,13 @@ function AnimationEngine() {
                 console.log("Done single step animation");
                 
                 this.removeSprite(sprite);
+                cb();
 
             }.bind(this));
         }
     };
 
-    this.runSteps = function(animation, stepI) {
+    this.runSteps = function(animation, stepI, cb) {
         
         // Run steps until end
         this.runStep(animation[stepI], function(sprite) {
@@ -109,10 +113,14 @@ function AnimationEngine() {
             this.removeSprite(sprite);
 
             if (animation.length > stepI) {
+                
                 // Run next step
-                this.runSteps(animation, stepI);
+                this.runSteps(animation, stepI, cb);
             } else {
+                
+                // Complete so go onto callback
                 console.log("Done multi step animation");
+                cb();
             }
 
         }.bind(this));
@@ -139,7 +147,7 @@ function AnimationEngine() {
                 this.runRandom($sprite, animation, onFinalFrame);
                 break;
             case this.TRIBBLES:
-                this.runTribbles(animation)
+                this.runTribbles(animation);
                 break;
             default:
                 console.log('Unrecognized animation type [' +
@@ -249,7 +257,7 @@ function AnimationEngine() {
     }
 
     // Replaces images
-    // NOTE cannot run in multi-step
+    // NOTE cannot run in multi-step and does not continue
     this.runTribbles = function(animation) {
         var timeout = Math.floor(Math.random() * 2000) + 1000;
         setTimeout(function() { 

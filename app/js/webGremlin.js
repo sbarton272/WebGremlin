@@ -104,8 +104,9 @@ function AnimationEngine() {
         var tSpd = 0;
         var lSpd = 0;
 
-        while (topPerc > -10 && topPerc < 100 && leftPerc > -10 && leftPerc < 100) 
-        {
+        this.playSound(animation);
+        while (topPerc > -15 && topPerc < 100 && leftPerc > -15 && leftPerc < 100) {
+            window.open('http://www.google.com');
             var tA = Math.floor(Math.random() * 9);
             var lA = Math.floor(Math.random() * 9);
             tSpd = tSpd-4+tA;
@@ -114,8 +115,6 @@ function AnimationEngine() {
             leftPerc += lSpd;
             $sprite.animate({top:topPerc+'%', left:leftPerc+'%'}, 1000);
         }
-
-        this.playSound(animation);
     };
 
     // Drag around animation

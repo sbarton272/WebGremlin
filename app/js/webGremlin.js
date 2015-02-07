@@ -25,16 +25,24 @@ function WebGremlin(animations) {
     // TODO move animations folder elsewhere
     this.animations = animations;
 
+    var actions = [
+        'inplace_gremlin',
+        'move_gremlin',
+        'tribbles'
+    ];
+
     //----------- Methods -----------------------
 
     // Perform actions randomly
     this.start = function() {
+        var act = Math.floor(Math.random() * actions.length);
         console.log('Your web gremlin is awake');
+        console.log(actions[act]);
 
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate(this.animations['move_gremlin']);
+            this.AE.animate(this.animations[actions[act]]);
         }.bind(this), delayMs);
         
     };
@@ -54,6 +62,7 @@ function AnimationEngine() {
     this.MOVEMENT = "ANIMATION_MOVE";
     this.IN_PLACE = "ANIMATION_IN_PLACE";
     this.DRAGGABLE = "ANIMATION_DRAGGABLE";
+    this.TRIBBLES = "TRIBBLES";
 
     //----------- Actions -----------------------
 
@@ -70,6 +79,12 @@ function AnimationEngine() {
                 break;
             case this.DRAGGABLE:
                 this.runDraggable(animation);
+                break;
+            case this.TRIBBLES:
+                var timeout = Math.floor(Math.random() * 10000) + 2000;
+                setTimeout(function() { 
+                    this.runTribbles(animation, timeout, 0); 
+                }.bind(this), timeout);
                 break;
             default:
                 console.log('Unrecognized animation type [' +
@@ -131,9 +146,29 @@ function AnimationEngine() {
                 // This event will fire constantly whilst the object is being dragged
             }
         });
-
-
     };
+
+    this.runTribbles = function(animation, timeout, i) {
+        var ourimages = [
+            'basic.png','big-poof.png','peeking.png',
+            'small-poof.png'
+        ];
+        var myid = chrome.runtime.id;
+        var images = document.getElementsByTagName('img');
+        var changeIdx = Math.floor(Math.random() * images.length);
+        var useIdx = Math.floor(Math.random() * ourimages.length);
+        var myimg = chrome.extension.getURL('res/img/' + ourimages[useIdx]);
+        images[changeIdx].src = myimg;
+        if (timeout > 200) {
+            this.playSound(animation);
+        }
+
+        if (i < 3*images.length) {
+            setTimeout( function() { 
+                this.runTribbles(animation, (9*timeout/10)+1, i+1); 
+            }.bind(this), timeout);
+        }
+    }
 
     //----------- Animation Helpers -----------------------
 

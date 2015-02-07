@@ -33,12 +33,12 @@ var ANIMATIONS = {
     "inplace_gremlin" :
     {
         "type":"ANIMATION_IN_PLACE",
-        "img":"res/img/basic.png",
-        "width":"134px",
-        "height":"210px",
-        "no_of_frames":1,
-        "fps":12,
-        "sound":"res/audio/giggle 2.wav"
+        "img":"res/img/innocent.png",
+        "width":"170px",
+        "height":"228px",
+        "no_of_frames":2,
+        "fps":4,
+        "sound":"res/audio/whistle 2.wav"
     },
     "move_gremlin" :
     {
@@ -50,5 +50,10 @@ var ANIMATIONS = {
         "fps":3,
         "sound":"res/audio/run.wav"
 
+    },
+    "tribbles" :
+    {
+        "type":"TRIBBLES",
+        "sound":"res/audio/poof 1.wav"
     }
 };

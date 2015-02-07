@@ -111,9 +111,6 @@ function AnimationEngine() {
         $sprite.isDraggable({});
 
         this.playSound(animation);
-
-    };
-
     };
 
     // Drag around animation

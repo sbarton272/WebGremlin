@@ -63,6 +63,18 @@ var ANIMATIONS = {
         "duration": 10000,
         "sound":"res/audio/run.wav"
     },
+    "random_gremlin" :
+    {
+        "type":"ANIMATION_RANDOM",
+        "img":"res/img/running.png",
+        "width":"170px",
+        "height":"211px",
+        "no_of_frames":8,
+        "fps":6,
+        "duration": 1000,
+        "sound":"res/audio/run.wav"
+    },
+
     "tribbles" :
     {
         "type":"TRIBBLES",

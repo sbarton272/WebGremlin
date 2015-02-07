@@ -86,6 +86,9 @@ function AnimationEngine() {
         var $sprite = this.drawSprite(animation.width, animation.height,
             topPerc+'%', leftPerc+'%', animation.img);
         $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
+
+        var sound = chrome.extension.getURL(animation.sound);
+        (new buzz.sound(sound)).play();
     };
 
     // Move across screen in straight line

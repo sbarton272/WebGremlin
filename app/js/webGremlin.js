@@ -10,11 +10,21 @@
 
 function WebGremlin() {
 
+    // Constants
+    this.MAX_DELAY = 1000;
+
     this.AE = new AnimationEngine();
 
+    // Perform actions randomly
     this.start = function() {
         console.log('Your web gremlin is awake');
-        this.AE.animate(this.AE.MOVEMENT);
+        console.log(this.AE);
+        
+        var delayMs = Math.floor(Math.random() * this.MAX_DELAY); 
+        setTimeout(function() {
+            this.AE.animate({'type':this.AE.MOVEMENT});
+        }.bind(this), delayMs)
+        
     };
 
 };
@@ -54,7 +64,7 @@ function AnimationEngine() {
 
     // Move across screen in straight line
     this.runMove = function(animation) {
-        console.log(MOVEMENT);
+        console.log(this.MOVEMENT);
     };
 
 }

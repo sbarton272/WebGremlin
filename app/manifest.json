@@ -1,0 +1,12 @@
+{
+  "name": "do a thing",
+  "version": "1000000.1",
+  "description": "does a thing",
+  "icons": {
+    "128": "icon.png"
+  },
+  "content_scripts": [ {
+    "matches": "http://*/*",
+    "js": "content.js"
+  } ]
+}

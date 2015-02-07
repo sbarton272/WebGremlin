@@ -34,8 +34,7 @@ function WebGremlin(animations) {
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            // TODO load 
-            this.AE.animate(this.animations['move_bird']);
+            this.AE.animate(this.animations['drag_bird']);
         }.bind(this), delayMs);
         
     };
@@ -53,7 +52,8 @@ function AnimationEngine() {
 
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
-    this.IN_PALCE = "ANIMATION_IN_PLACE";
+    this.IN_PLACE = "ANIMATION_IN_PLACE";
+    this.DRAGGABLE = "ANIMATION_DRAGGABLE";
 
     //----------- Actions -----------------------
 
@@ -65,8 +65,11 @@ function AnimationEngine() {
             case this.MOVEMENT:
                 this.runMove(animation);
                 break;
-            case this.IN_PALCE:
+            case this.IN_PLACE:
                 this.runInPlace(animation);
+                break;
+            case this.DRAGGABLE:
+                this.runDraggable(animation);
                 break;
             default:
                 console.log('Unrecognized animation type [' +
@@ -85,20 +88,18 @@ function AnimationEngine() {
         
         var $sprite = this.drawSprite(animation.width, animation.height,
             topPerc+'%', leftPerc+'%', animation.img);
-        $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
-
+        this.animateSprite($sprite, animation);
         this.playSound(animation);
     };
 
     // Move across screen in straight line
     this.runMove = function(animation) {
 
-
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
         var $sprite = this.drawSprite(animation.width, animation.height,
             topPerc+'%', leftPerc+'%', animation.img);
-        $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
+        this.animateSprite($sprite, animation);
         $sprite.spStart();
         $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
         var tSpd = 0;
@@ -116,10 +117,46 @@ function AnimationEngine() {
         }
 
         this.playSound(animation);
-
     };
 
+    // Drag around animation
+    this.runDraggable = function(animation) {
+
+        var $sprite = this.drawSprite(animation.width, animation.height,
+            '50px', '50px', animation.img);
+
+        this.animateSprite($sprite, animation);
+        $sprite.isDraggable({
+            start: function() {
+                // Fade sprite to 70% opacity when at the start of the drag
+                $sprite.fadeTo('fast', 0.7);
+            },
+            stop: function() {
+                // Return sprite to 100% opacity when finished
+                $sprite.fadeTo('fast', 1);
+            },
+            drag: function() {
+                // This event will fire constantly whilst the object is being dragged
+            }
+        });
+    };
+
+    //----------- Animation Helpers -----------------------
+
+    this.animateSprite = function(sprt, animation, onFirstFrame, onLastFrame) {
+        sprt.sprite({
+            fps: animation.fps,
+            no_of_frames: animation.no_of_frames,
+            play_frames: animation.play_frames, // Finite number of frames to run
+            on_frame: animation.on_frame,
+            on_first_frame: onFirstFrame,
+            on_last_frame: onLastFrame
+        });
+
+    }
+
     //------------Playing Sound------------------
+
     this.playSound = function(animation) {
         var sound = chrome.extension.getURL(animation.sound);
         (new buzz.sound(sound)).play();
@@ -159,7 +196,7 @@ function AnimationEngine() {
         $('body').append($sprite);
 
         return $sprite;
-    }
+    };
 
 };
 

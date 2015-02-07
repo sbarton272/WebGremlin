@@ -3,7 +3,7 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 
 # Learning
 - https://developer.chrome.com/extensions/overview
-- Want background process
+- Want background process: https://developer.chrome.com/extensions/content_scripts
 - Use content script
 
 # Resources

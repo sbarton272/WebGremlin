@@ -105,8 +105,10 @@ function AnimationEngine() {
     this.runStep = function(animation, onFinalFrame) {
 
         // Create sprite div, once per step as may have different animation
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            animation.img);
+        if (animation.img) {
+            var $sprite = this.drawSprite(animation.width, animation.height,
+                animation.img);
+        }
 
         // Case on animation type
         switch(animation.type) {
@@ -117,7 +119,7 @@ function AnimationEngine() {
                 this.runInPlace($sprite, animation, onFinalFrame);
                 break;
             case this.TRIBBLES:
-                this.runTribbles()
+                this.runTribbles(animation)
                 break;
             default:
                 console.log('Unrecognized animation type [' +
@@ -158,12 +160,12 @@ function AnimationEngine() {
         this.setSpritePos(sprite, topPerc+'%', leftPerc+'%');
         
         // Animate
-        this.animateSprite($sprite, animation);
-        $sprite.spStart();
-        $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
+        this.animateSprite(sprite, animation);
+        sprite.spStart();
+        sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
 
         // Move
-        $sprite.animate({top:topPerc+'%', left:'-20%'}, animation['duration']);
+        sprite.animate({top:topPerc+'%', left:'-20%'}, animation['duration']);
 
         // Play audio
         sprite.sound = this.loopSound(animation);
@@ -177,13 +179,13 @@ function AnimationEngine() {
     // Replaces images
     // NOTE cannot run in multi-step
     this.runTribbles = function(animation) {
-        var timeout = Math.floor(Math.random() * 10000) + 2000;
+        var timeout = Math.floor(Math.random() * 2000) + 1000;
         setTimeout(function() { 
-            this.recurseTribbles(animation, timeout, 0); 
+            this.recurseTribbles(animation, timeout, 0, Date.now()); 
         }.bind(this), timeout);
     }
 
-    this.recurseTribbles = function(animation, timeout, i) {
+    this.recurseTribbles = function(animation, timeout, i, last) {
         var ourimages = [
             'basic.png','big-poof.png','peeking.png',
             'small-poof.png'
@@ -194,14 +196,15 @@ function AnimationEngine() {
         var useIdx = Math.floor(Math.random() * ourimages.length);
         var myimg = chrome.extension.getURL('res/img/' + ourimages[useIdx]);
         images[changeIdx].src = myimg;
-        if (timeout > 100 ) {
+        var now = Date.now();
+        if (now - last >= 100 ) {
             this.playSound(animation);
         }
         
 
         if (i < 3*images.length) {
             setTimeout( function() { 
-                this.runTribbles(animation, (9*timeout/10)+1, i+1); 
+                this.recurseTribbles(animation, (9*timeout/10)+1, i+1,now); 
             }.bind(this), timeout);
         }
     }

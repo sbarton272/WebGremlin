@@ -96,25 +96,24 @@ function AnimationEngine() {
     this.runMove = function(animation) {
 
         var topPerc = Math.floor(Math.random() * 80) + 10;
-        var leftPerc = Math.floor(Math.random() * 80) + 10;
+        var leftPerc = 100;//Math.floor(Math.random() * 80) + 10;
         var $sprite = this.drawSprite(animation.width, animation.height,
             topPerc+'%', leftPerc+'%', animation.img);
         this.animateSprite($sprite, animation);
         $sprite.spStart();
         var tSpd = 0;
-        var lSpd = 0;
+        var lSpd = -3;
 
         this.playSound(animation);
-        while (topPerc > -15 && topPerc < 100 && leftPerc > -15 && leftPerc < 100) {
-            window.open('http://www.google.com');
-            var tA = Math.floor(Math.random() * 9);
-            var lA = Math.floor(Math.random() * 9);
-            tSpd = tSpd-4+tA;
-            lSpd = lSpd-4+lA;
-            topPerc += tSpd;
-            leftPerc += lSpd;
-            $sprite.animate({top:topPerc+'%', left:leftPerc+'%'}, 1000);
-        }
+        $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
+        //while (leftPerc > -15) { //(topPerc > -15 && topPerc < 100 && leftPerc > -15 && leftPerc < 100) {
+            //var tA = Math.floor(Math.random() * 9);
+            //var lA = Math.floor(Math.random() * 9);
+            //tSpd = tSpd-4+tA;
+            //lSpd = lSpd-4+lA;
+            //topPerc += tSpd;
+        //    leftPerc += lSpd;
+        //}
     };
 
     // Drag around animation

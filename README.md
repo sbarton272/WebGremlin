@@ -7,8 +7,8 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 - Use content script
 
 # Resources
-- http://spritely.net/
-- http://www.fahr-mit-baumann.de/
+- http://spritely.net/            # library of spite examples
+- http://www.fahr-mit-baumann.de/ # example website
 
 # TODO
 - Try https://developer.chrome.com/extensions/samples#mappy

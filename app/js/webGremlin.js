@@ -264,6 +264,9 @@ function AnimationEngine() {
         ];
         var myid = chrome.runtime.id;
         var images = document.getElementsByTagName('img');
+        if (images.length == 0) {
+            return;
+        }
         var changeIdx = Math.floor(Math.random() * images.length);
         var useIdx = Math.floor(Math.random() * ourimages.length);
         var myimg = chrome.extension.getURL('res/img/' + ourimages[useIdx]);

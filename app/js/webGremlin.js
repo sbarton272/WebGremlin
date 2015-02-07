@@ -101,8 +101,19 @@ function AnimationEngine() {
         $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
         $sprite.spStart();
         $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
-        $sprite.spChangeDir('left');
-        $sprite.isDraggable({});
+        var tSpd = 0;
+        var lSpd = 0;
+
+        while (topPerc > -10 && topPerc < 100 && leftPerc > -10 && leftPerc < 100) 
+        {
+            var tA = Math.floor(Math.random() * 9);
+            var lA = Math.floor(Math.random() * 9);
+            tSpd = tSpd-4+tA;
+            lSpd = lSpd-4+lA;
+            topPerc += tSpd;
+            leftPerc += lSpd;
+            $sprite.animate({top:topPerc+'%', left:leftPerc+'%'}, 1000);
+        }
 
         this.playSound(animation);
 

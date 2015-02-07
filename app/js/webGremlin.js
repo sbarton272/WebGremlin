@@ -4,25 +4,38 @@
 * Carson, Adam, Billy and Spencer
 */
 
+// TODO 
+// add audio
+// 
+
 //---------------------------------------------
 // Gremlin engine
 //---------------------------------------------
 
-function WebGremlin() {
+function WebGremlin(animations) {
+
+    //----------- Constants -----------------------
 
     // Constants
     this.MAX_DELAY = 1000;
 
     this.AE = new AnimationEngine();
 
+    // Load animations
+    // TODO move animations folder elsewhere
+    this.animations = animations;
+
+    //----------- Methods -----------------------
+
     // Perform actions randomly
     this.start = function() {
         console.log('Your web gremlin is awake');
-        
+
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate({'type':this.AE.IN_PALCE});
+            // TODO load 
+            this.AE.animate(this.animations['inplace_bird']);
         }.bind(this), delayMs);
         
     };
@@ -63,25 +76,28 @@ function AnimationEngine() {
     };
 
     //----------- Animations -----------------------
-    // animation needs:
-    // - url
-    // - width
-    // - height
-    // - no_of_frames
 
     // In place animation
     this.runInPlace = function(animation) {
-        // TODO remove hard coding
+        
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
-        var $sprite = this.drawSprite('180px', '123px', topPerc+'%',
-            leftPerc+'%', 'res/img/bird.png')
-        $sprite.sprite({fps: 12, no_of_frames: 3});
+        
+        var $sprite = this.drawSprite(animation.width, animation.height,
+            topPerc+'%', leftPerc+'%', animation.img);
+        $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
     };
 
     // Move across screen in straight line
     this.runMove = function(animation) {
-        console.log(this.MOVEMENT);
+
+        var topPerc = Math.floor(Math.random() * 80) + 10;
+
+        var $sprite = this.drawSprite(animation.width, animation.height,
+            topPerc+'%', '-50%', animation.img);
+        $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
+        $sprite.pan({});
+
     };
 
     //----------- Drawing -----------------------
@@ -125,5 +141,6 @@ function AnimationEngine() {
 // Run
 //---------------------------------------------
 
-var webGremlin = new WebGremlin();
+var animations = require('res/animations.json');
+var webGremlin = new WebGremlin(animations);
 webGremlin.start();

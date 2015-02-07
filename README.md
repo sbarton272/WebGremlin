@@ -15,4 +15,16 @@ Your very own web gremlin Chrome Extension - TartanHacks 2015
 - Try displaying images
 
 # Features
-- post random gibberish to Facebook
+- run across the screen
+- giggle
+- peek from sides of screen
+- tickling
+- swap letters in words
+
+# Project Components
+- play audio
+- mouse input
+- sprite animation
+- Chrome extension configurations
+- Javascript injection
+- animations

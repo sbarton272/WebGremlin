@@ -87,8 +87,7 @@ function AnimationEngine() {
             topPerc+'%', leftPerc+'%', animation.img);
         $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
 
-        var sound = chrome.extension.getURL(animation.sound);
-        (new buzz.sound(sound)).play();
+        this.playSound(animation);
     };
 
     // Move across screen in straight line
@@ -101,7 +100,15 @@ function AnimationEngine() {
         $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
         $sprite.pan({});
 
+        this.playSound(animation);
+
     };
+
+    //------------Playing Sound------------------
+    this.playSound = function(animation) {
+        var sound = chrome.extension.getURL(animation.sound);
+        (new buzz.sound(sound)).play();
+    }
 
     //----------- Drawing -----------------------
 

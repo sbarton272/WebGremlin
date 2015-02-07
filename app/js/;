@@ -91,16 +91,12 @@ function AnimationEngine() {
     // Move across screen in straight line
     this.runMove = function(animation) {
 
-
         var topPerc = Math.floor(Math.random() * 80) + 10;
-        var leftPerc = Math.floor(Math.random() * 80) + 10;
+
         var $sprite = this.drawSprite(animation.width, animation.height,
-            topPerc+'%', leftPerc+'%', animation.img);
+            topPerc+'%', '50%', animation.img);
         $sprite.sprite({fps: animation.fps, no_of_frames: animation.no_of_frames});
-        $sprite.spStart();
-        $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
-        $sprite.spChangeDir('left');
-        $sprite.isDraggable({});
+        $sprite.pan({});
 
     };
 
@@ -126,7 +122,6 @@ function AnimationEngine() {
             'height': height.toString()
         })
         .css({
-            'cursor':'pointer',
             'position': 'absolute',
             'top': posTop,
             'left': posLeft,
@@ -134,7 +129,7 @@ function AnimationEngine() {
             'background-repeat': 'no-repeat',
             'background-color': 'transparent',
             'z-index': this.Z_SCORE
-        })
+        });
         $('body').append($sprite);
 
         return $sprite;

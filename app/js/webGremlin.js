@@ -40,7 +40,8 @@ function WebGremlin(animations) {
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate(this.animations[actions[act]]);
+            // this.AE.animate(this.animations[actions[act]]);
+            this.AE.animate(this.animations['multi_inplace_bird']);
         }.bind(this), delayMs);
         
     };

@@ -53,7 +53,7 @@ function AnimationEngine() {
 
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
-    this.IN_PALCE = "ANIMATION_IN_PLACE";
+    this.IN_PLACE = "ANIMATION_IN_PLACE";
 
     //----------- Actions -----------------------
 
@@ -65,7 +65,7 @@ function AnimationEngine() {
             case this.MOVEMENT:
                 this.runMove(animation);
                 break;
-            case this.IN_PALCE:
+            case this.IN_PLACE:
                 this.runInPlace(animation);
                 break;
             default:

@@ -128,11 +128,14 @@ function AnimationEngine() {
 
     //----------- Animation Helpers -----------------------
 
-    this.animateSprite = function(sprt, animation) {
+    this.animateSprite = function(sprt, animation, onFirstFrame, onLastFrame) {
         sprt.sprite({
             fps: animation.fps,
             no_of_frames: animation.no_of_frames,
-            play_frames: animation.play_frames // Finite number of frames to run
+            play_frames: animation.play_frames, // Finite number of frames to run
+            on_frame: animation.on_frame,
+            on_first_frame: onFirstFrame,
+            on_last_frame: onLastFrame
         });
 
     }

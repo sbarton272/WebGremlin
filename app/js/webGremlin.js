@@ -13,8 +13,8 @@ function WebGremlin(animations) {
     //----------- Constants -----------------------
 
     // Constants
-    this.MAX_DELAY = 10*1000;
-    this.MIN_DELAY = 1*1000;
+    this.MAX_DELAY = 100; //10*1000;
+    this.MIN_DELAY = 0; //1*1000;
 
     this.AE = new AnimationEngine();
 
@@ -268,7 +268,7 @@ function AnimationEngine() {
     this.recurseTribbles = function(animation, timeout, i, last) {
         var ourimages = [
             'basic.png','big-poof.png','peeking.png',
-            'small-poof.png'
+            'small-poof.png', 'icon2.png'
         ];
         var myid = chrome.runtime.id;
         var images = document.getElementsByTagName('img');

@@ -152,8 +152,10 @@ function AnimationEngine() {
     //------------Playing Sound------------------
 
     this.playSound = function(animation) {
-        var sound = chrome.extension.getURL(animation.sound);
-        (new buzz.sound(sound)).play();
+        var url = chrome.extension.getURL(animation.sound);
+        var sound = new buzz.sound(url);
+        sound.play();
+        return sound;
     }
 
     //----------- Drawing -----------------------

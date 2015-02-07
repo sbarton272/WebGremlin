@@ -18,7 +18,6 @@ function WebGremlin() {
     // Perform actions randomly
     this.start = function() {
         console.log('Your web gremlin is awake');
-        console.log(this.AE);
         
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
@@ -108,8 +107,8 @@ function AnimationEngine() {
         })
         .css({
             'position': 'absolute',
-            'top': topPerc,
-            'left': leftPerc,
+            'top': posTop,
+            'left': posLeft,
             'background-image': url,
             'background-repeat': 'no-repeat',
             'background-color': 'transparent',

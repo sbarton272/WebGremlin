@@ -34,7 +34,7 @@ function WebGremlin(animations) {
         // Action after certain delay
         var delayMs = Math.floor(Math.random() * this.MAX_DELAY);
         setTimeout(function() {
-            this.AE.animate(this.animations['move_bird']);
+            this.AE.animate(this.animations['move_gremlin']);
         }.bind(this), delayMs);
         
     };
@@ -101,19 +101,13 @@ function AnimationEngine() {
             topPerc+'%', leftPerc+'%', animation.img);
         this.animateSprite($sprite, animation);
         $sprite.spStart();
+        $sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
         var tSpd = 0;
         var lSpd = -3;
 
         this.playSound(animation);
         $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
-        //while (leftPerc > -15) { //(topPerc > -15 && topPerc < 100 && leftPerc > -15 && leftPerc < 100) {
-            //var tA = Math.floor(Math.random() * 9);
-            //var lA = Math.floor(Math.random() * 9);
-            //tSpd = tSpd-4+tA;
-            //lSpd = lSpd-4+lA;
-            //topPerc += tSpd;
-        //    leftPerc += lSpd;
-        //}
+
     };
 
     // Drag around animation
@@ -158,10 +152,8 @@ function AnimationEngine() {
     //------------Playing Sound------------------
 
     this.playSound = function(animation) {
-        if (animation.sound) {
-            var sound = chrome.extension.getURL(animation.sound);
-            (new buzz.sound(sound)).play();
-        }
+        var sound = chrome.extension.getURL(animation.sound);
+        (new buzz.sound(sound)).play();
     }
 
     //----------- Drawing -----------------------

@@ -60,7 +60,6 @@ function AnimationEngine() {
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
     this.IN_PLACE = "ANIMATION_IN_PLACE";
-    this.DRAGGABLE = "ANIMATION_DRAGGABLE";
     this.TRIBBLES = "TRIBBLES";
 
     //----------- Actions -----------------------
@@ -121,9 +120,6 @@ function AnimationEngine() {
             case this.IN_PLACE:
                 this.runInPlace($sprite, animation, onFinalFrame);
                 break;
-            case this.DRAGGABLE:
-                this.runDraggable($sprite, animation, onFinalFrame);
-                break;
             case this.TRIBBLES:
                 // TODO move to helper
                 var timeout = Math.floor(Math.random() * 10000) + 2000;
@@ -177,32 +173,6 @@ function AnimationEngine() {
         $sprite.animate({top:topPerc+'%', left:'-20%'}, 10000);
 
         // TODO onFinalFrame
-    };
-
-    // Drag around animation
-    this.runDraggable = function(sprite, animation, onFinalFrame) {
-
-        var $sprite = this.drawSprite(animation.width, animation.height,
-            '50px', '50px', animation.img);
-
-        this.animateSprite($sprite, animation);
-        $sprite.isDraggable({
-            start: function() {
-                // Fade sprite to 70% opacity when at the start of the drag
-                $sprite.fadeTo('fast', 0.7);
-            },
-            stop: function() {
-                // Return sprite to 100% opacity when finished
-                $sprite.fadeTo('fast', 1);
-                this.playSound(animation);
-            }.bind(this),
-            drag: function() {
-                // This event will fire constantly whilst the object is being dragged
-            }
-        });
-
-        // TODO onFinalFrame
-
     };
 
     // Replaces images

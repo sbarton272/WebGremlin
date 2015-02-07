@@ -8,9 +8,14 @@
 // Gremlin engine
 //---------------------------------------------
 
-var WebGremlin = {
+function WebGremlin() {
 
-	aE: AnimationEngine,
+    this.AE = new AnimationEngine();
+
+    this.start = function() {
+        console.log('Your web gremlin is awake');
+        this.AE.animate(this.AE.MOVEMENT);
+    };
 
 };
 
@@ -18,42 +23,45 @@ var WebGremlin = {
 // Animation engine
 //---------------------------------------------
 
-var AnimationEngine = {
-	// Defined animations
-	MOVEMENT: "ANIMATION_MOVE",
+function AnimationEngine() {
+    // Defined animations
+    this.MOVEMENT = "ANIMATION_MOVE";
 
-	// Animation object used to play animation 
-	animate: function(animation) {
+    // TODO create div for sprite, add sprite to body
+    // TODO animate sprite (per animation)
 
-		// Case on animation type
-		switch(animation.type) {
-			case MOVEMENT:
-				this.runMove(animation);
-				break;
-			default:
-				console.log('Unrecognized animation type ' + animation.type);
-				break;
-		}
-	},
+    //----------- Animations -----------------------
 
-	// TODO create div for sprite, add sprite to body
-	// TODO animate sprite (per animation)
+    // Animation object used to play animation 
+    this.animate = function(animation) {
 
-	//----------- Animations -----------------------
+        // Case on animation type
+        switch(animation.type) {
+            case this.MOVEMENT:
+                this.runMove(animation);
+                break;
+            default:
+                console.log('Unrecognized animation type [' +
+                    animation.type + ']');
+                break;
+        }
+    };
 
-	// In place animation
-	runInPlace: function(animation) {
-		// TODO
-	},
+    // In place animation
+    this.runInPlace = function(animation) {
+        // TODO
+    };
 
-	// Move across screen in straight line
-	runMove: function(animation) {
-		console.log(MOVEMENT);
-	}
+    // Move across screen in straight line
+    this.runMove = function(animation) {
+        console.log(MOVEMENT);
+    };
 
-
-};
+}
 
 //---------------------------------------------
 // Run
 //---------------------------------------------
+
+var webGremlin = new WebGremlin();
+webGremlin.start();

@@ -268,7 +268,7 @@ function AnimationEngine() {
     this.recurseTribbles = function(animation, timeout, i, last) {
         var ourimages = [
             'basic.png','big-poof.png','peeking.png',
-            'small-poof.png', 'icon2.png'
+            'small-poof.png', 'icon2.png', 'seductive.png', 'beach.png'
         ];
         var myid = chrome.runtime.id;
         var images = document.getElementsByTagName('img');

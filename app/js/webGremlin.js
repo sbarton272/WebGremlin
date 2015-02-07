@@ -23,6 +23,7 @@ function WebGremlin(animations) {
     var actions = [
         'whistle_gremlin',
         'running_gremlin',
+        'random_gremlin',
         'tribbles'
     ];
 
@@ -74,6 +75,7 @@ function AnimationEngine() {
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
     this.IN_PLACE = "ANIMATION_IN_PLACE";
+    this.RANDOM = "ANIMATION_RANDOM";
     this.TRIBBLES = "TRIBBLES";
 
     //----------- Actions -----------------------
@@ -141,6 +143,9 @@ function AnimationEngine() {
             case this.IN_PLACE:
                 this.runInPlace($sprite, animation, onFinalFrame);
                 break;
+            case this.RANDOM:
+                this.runRandom($sprite, animation, onFinalFrame);
+                break;
             case this.TRIBBLES:
                 this.runTribbles(animation);
                 break;
@@ -185,7 +190,6 @@ function AnimationEngine() {
         // Animate
         this.animateSprite(sprite, animation);
         sprite.spStart();
-        sprite.spRandom({top:0, left:0, right:400, bottom:1000, speed:3500,pause:1000});
 
         // Move
         sprite.animate({top:topPerc+'%', left:'-20%'}, animation['duration']);
@@ -198,6 +202,59 @@ function AnimationEngine() {
             onFinalFrame(sprite);
         }.bind(this), animation['duration']);
     };
+
+    // Run around willy nilly
+    this.runRandom = function(sprite, animation, onFinalFrame) {
+
+        // Set div
+        var topPerc = Math.floor(Math.random() * 80) + 10;
+        var leftPerc = Math.floor(Math.random() * 80) + 10;
+        this.setSpritePos(sprite, topPerc+'%', leftPerc+'%');
+        
+        // Animate
+        this.animateSprite(sprite, animation);
+
+        // Play audio
+        sprite.sound = this.loopSound(animation);
+
+        this.randomStep(animation, sprite, topPerc, leftPerc,
+            0, 0, onFinalFrame);
+    };
+
+    this.randomStep = function(animation, sprite, topPerc, leftPerc,
+        tV, lV, onFinalFrame)
+    {
+        var tA = Math.floor(Math.random() * 9) - 5;
+        var lA = Math.floor(Math.random() * 9) - 5;
+        tV += tA;
+        lV += lA;
+        topPerc += tV;
+        leftPerc += lV;
+        if (leftPerc > 90) {
+            leftPerc = 90;
+        }
+        if (lV < 0) {
+            sprite.spState(1);
+        } else {
+            sprite.spState(2);
+        }
+
+        // Move
+        sprite.animate(
+            {top:topPerc+'%', left:leftPerc+'%'}, 
+            1000
+        );
+        if (leftPerc > -15 && topPerc > -50) {
+            setTimeout( function () {
+                this.randomStep(animation, sprite, topPerc, leftPerc,
+                    tV, lV, onFinalFrame);
+            }.bind(this), 1000);
+        } else {
+            setTimeout(function() {
+                onFinalFrame(sprite);
+            }.bind(this), animation['duration']);
+        }
+    }
 
     // Replaces images
     // NOTE cannot run in multi-step and does not continue

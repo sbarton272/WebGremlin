@@ -65,14 +65,17 @@ function AnimationEngine() {
     runInPlace = function(animation) {
         var topPerc = Math.floor(Math.random() * 80) + 10;
         var leftPerc = Math.floor(Math.random() * 80) + 10;
+        var url = 'url(' + chrome.extension.getURL(animation.url) + ')';
         var $sprite = $('<div/>', {
-            'id':'gremline',
+            'id':'gremlin',
+            'width':animation.width,
+            'height':animation.height
         })
         .css({
             'position':'absolute',
             'top':String(topPerc) + '%',
             'left':String(leftPerc) + '%',
-            'background-image':animtion.url,
+            'background-image':url,
             'background-repeat':'no-repeat',
             'background-color':'transparent',
             'z-index':'10000'
@@ -83,9 +86,27 @@ function AnimationEngine() {
 
     // Move across screen in straight line
     runMove = function(animation) {
+        var topPerc = Math.floor(Math.random() * 80) + 10;
+        var url = 'url(' + chrome.extension.getURL(animation.url) + ')';
+        var $sprite = $('<div/>', {
+            'id':'gremlin',
+            'width':animation.width,
+            'height':animation.height
+        })
+        .css({
+            'position':'absolute',
+            'top':String(topPerc) + '%',
+            'left':'-50%',
+            'background-image':url,
+            'background-repeat':'no-repeat',
+            'background-color':'transparent',
+            'z-index':'10000'
+        });
+        $('body').append($sprite);
+        $sprite.sprite({fps: 12, no_of_frames: animation.no_of_frames});
+        $sprite.pan({});
         console.log(MOVEMENT);
     };
-
 };
 
 //---------------------------------------------

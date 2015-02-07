@@ -1,0 +1,16 @@
+{
+    'inplace_animation' :
+    {
+        'url':'res/img/inplace.png',
+        'width':'100px',
+        'height':'200px',
+        'no_of_frames':3
+    },
+    'running_animation' :
+    {
+        'url':'res/img/running.png',
+        'width':'100px',
+        'height':'300px',
+        'no_of_frames':1000
+    }
+}

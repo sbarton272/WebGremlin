@@ -18,8 +18,8 @@ function WebGremlin(animations) {
     //----------- Constants -----------------------
 
     // Constants
-    this.MAX_DELAY = 100; //10*1000;
-    this.MIN_DELAY = 0; //1*1000;
+    this.MAX_DELAY = 5*60*1000;
+    this.MIN_DELAY = 30*1000;
 
     this.AE = new AnimationEngine();
 
@@ -77,6 +77,8 @@ function AnimationEngine() {
     //----------- Constants -----------------------
 
     this.Z_SCORE = 9999999;
+    this.TRIBBLES_MIN = 5*1000;
+    this.TRIBBLES_RANGE = 10*1000;
 
     // Defined animations
     this.MOVEMENT = "ANIMATION_MOVE";
@@ -268,7 +270,8 @@ function AnimationEngine() {
     // Replaces images
     // NOTE cannot run in multi-step and does not continue
     this.runTribbles = function(animation) {
-        var timeout = Math.floor(Math.random() * 2000) + 1000;
+        var timeout = Math.floor(Math.random() * this.TRIBBLES_RANGE)
+            + this.TRIBBLES_MIN;
         setTimeout(function() { 
             this.recurseTribbles(animation, timeout, 0, Date.now()); 
         }.bind(this), timeout);
